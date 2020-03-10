@@ -14,34 +14,23 @@ class GSimulacion:
         self.particulas = []
         for _ in range(0,self.N):
             self.particulas.append(ParticulaMasa())
-        self.init_pos()  
-        self.init_vel() 
-        self.init_masa()
+        self.ini_valores()
+        self.TamX=5
+        self.TamY=5
         self.deltat = 0.1
         self.tiempo =0.0
 
-    def init_pos(self):
-        self.particulas[0].pos=np.zeros(3) # la primera en el centro
-        self.particulas[1].pos=np.array([1, 1, 0.])
-        self.particulas[2].pos=np.array([1.2, 0.25, 0.])
-
-        seed()
+    def ini_valores(self):
+        self.particulas[0].set_valores(np.zeros(3), np.zeros(3), np.zeros(3), 1.0e10)
+        self.particulas[1].set_valores(np.array([1, 1, 0.]), np.array([0,0.5,0.]), np.zeros(3), 1.0e5)
+        self.particulas[2].set_valores(np.array([1.2, 0.25, 0.]), np.array([0,0.5,0.]), np.zeros(3), 1.0e5)
         for i in range(3,self.N):
-            self.particulas[i].pos =np.array([random()*2-1, random()*2-1, random()*2-1])
+            self.particulas[i].set_valores(np.array([random()*self.TamX-self.TamX/2, random()*self.TamX-self.TamX/2, random()*self.TamX-self.TamX/2]),
+            np.array([0,0.5,0]), np.zeros(3), 1.0e5)
 
-    def init_vel(self):
-        seed()
-        self.particulas[0].vel=np.zeros(3) # la primera quieta
-        self.particulas[1].vel=np.array([0,0.5,0.])
-        self.particulas[2].vel=np.array([0,0.5,0.])
-        for i in range(3,self.N):
-            # self.particulas[i].vel =[random()*2-1,random()*2-1,random()*2-1]
-            self.particulas[i].vel =np.array([0.,0.5,0.])
 
-    def init_masa(self):
-        self.particulas[0].masa = 1.0e10  # La primera más grande
-        for i in range(1,self.N):
-            self.particulas[i].masa = 1.0e5
+
+
 
 # """ """     def prepara_grafico(self):
 #         plt.ion()
