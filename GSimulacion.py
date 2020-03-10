@@ -19,6 +19,8 @@ class GSimulacion:
         self.TamY=5
         self.deltat = 0.1
         self.tiempo =0.0
+        self.prepara_grafico()
+        self.refresca_particulas() 
 
     def ini_valores(self):
         self.particulas[0].set_valores(np.zeros(3), np.zeros(3), np.zeros(3), 1.0e10)
@@ -30,35 +32,6 @@ class GSimulacion:
 
 
 
-
-
-# """ """     def prepara_grafico(self):
-#         plt.ion()
-#         self.fig = plt.figure()
-#         self.ax = self.fig.add_subplot(111,projection='3d')
-#         # self.ax = plt.axes(projection='3d')
-
-#         self.ax.set_xlim(-2.5,2.5)
-#         self.ax.set_ylim(-2.5,2.5)
-#         self.ax.set_zlim(-2.5,2.5)
-
-#         #prueba
-#         self.grafico = self.ax.scatter([],[],[],c='r',marker='o')
-#         plt.draw() """
-
-    # def refresca_particulas(self):
-       
-    #     self.grafico.remove()
-    #     # self.grafico=self.ax.scatter3D(x, y, z, c=z, cmap='Greens')
-    #     col=['g']
-    #     for _ in range (1,self.N):
-    #         col.append('r')
-    #     x,y,z = self.vectoriza()    
-    #     # plt.title("Partículas. Tiempo= "+ str(self.tiempo))
-    #     self.grafico = self.ax.scatter(x,y,z,c=col,marker='o')
-    #     # self.ax.view_init(30, 30)
-    #     plt.draw()
-    #     plt.pause(pausa)
 
     def print_particulas(self):
         for i in range(0,self.N):
@@ -86,8 +59,45 @@ class GSimulacion:
             print ("Timepo:", self.tiempo)
             self.print_particulas()
             self.paso_simulacion()
+            self.refresca_particulas()
             self.tiempo += self.deltat
   
         print ("Fin particulas")
 
 
+    def prepara_grafico(self):
+        plt.ion()
+        self.fig = plt.figure()
+        self.ax = self.fig.add_subplot(111,projection='3d')
+        self.titulo=self.ax.text2D(0.05, 0.95, "Tiempo %.2f"%0.0, transform=self.ax.transAxes)
+        self.ax.set_xlim(-2.5,2.5)
+        self.ax.set_ylim(-2.5,2.5)
+        self.ax.set_zlim(-2.5,2.5)
+
+        self.grafico = self.ax.scatter([],[],[],c='r',marker='o')
+        plt.draw()
+
+    def refresca_particulas(self):
+       
+        self.grafico.remove() #Limpia el grafico para mostrar las posiciones nuevas
+        self.titulo.remove()
+        self.titulo=self.ax.text2D(0.05, 0.95, "Tiempo %.2f"%self.tiempo, transform=self.ax.transAxes)
+        col=['g']   # La primera verde y el resto rojas
+        for _ in range (1,self.N):
+            col.append('r')
+        x,y,z = self.vectoriza()    
+        self.grafico = self.ax.scatter(x,y,z,c=col,marker='o')
+
+        plt.draw()
+        plt.pause(pausa)
+
+    def vectoriza(self):
+        x=[]
+        y=[]
+        z=[]
+        for i in range(0,self.N):
+            x.append(self.particulas[i].pos[0])
+            y.append(self.particulas[i].pos[1])
+            z.append(self.particulas[i].pos[2])
+
+        return x,y,z
