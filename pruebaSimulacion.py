@@ -1,5 +1,5 @@
 from GSimulacion import *
 NumeroParticulas = 3
 TiempoTotal = 10
-gsim =GSimulacion(NumeroParticulas,TiempoTotal)
-gsim.start()
+sim =Simulacion(NumeroParticulas,TiempoTotal)
+sim.simula()

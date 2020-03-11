@@ -6,7 +6,7 @@ import time
 from mpl_toolkits import mplot3d
 pausa = 0.02
 
-class GSimulacion:
+class Simulacion:
         
     def __init__(self, NumParticulas, tiempoTot):
         self.N = NumParticulas
@@ -41,7 +41,7 @@ class GSimulacion:
         print ("Inicio de la simulación")
 
 
-    def paso_simulacion(self):
+    def avanza(self):
         for i in range (0,self.N):# update acceleration
             self.particulas[i].aceleracion_cero()
             for j in range (0, self.N):
@@ -51,14 +51,14 @@ class GSimulacion:
         for i in range (0,self.N):#update vel and pos
                 self.particulas[i].actualiza_velocidad_y_posicion(self.deltat)        
 
-    def start(self):
+    def simula(self):
         self.cabecera()
                    # prevents explosion in the case the particles are really close to each other 
         
         while self.tiempo <= self.tiempoTot: 
             print ("Timepo:", self.tiempo)
             self.print_particulas()
-            self.paso_simulacion()
+            self.avanza()
             self.refresca_particulas()
             self.tiempo += self.deltat
   
